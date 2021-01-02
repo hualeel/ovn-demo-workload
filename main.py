@@ -22,8 +22,8 @@ app = Flask(__name__,
 def get_self_name_ip():
     host_name = socket.gethostname()
     ip_address = socket.gethostbyname(host_name)
-    print "Host name: %s" % host_name
-    print "IP address: %s" % ip_address
+    print ("Host name: %s" % host_name)
+    print ("IP address: %s" % ip_address)
     return "Host name: %s" % host_name + "<br>" + "IP address: %s" % ip_address
 
 
