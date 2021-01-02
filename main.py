@@ -6,6 +6,7 @@ Author:
 """
 
 from flask import Flask, current_app, redirect, url_for
+from flask_cors import *
 import socket
 
 app = Flask(__name__,
@@ -15,13 +16,14 @@ app = Flask(__name__,
             )
 
 
-@app.route('/kube-ovn/get-self-name-ip', methods=["GET"])
+@app.route('/get-pod', methods=["GET"])
+@cross_origin()
 def get_self_name_ip():
     host_name = socket.gethostname()
     ip_address = socket.gethostbyname(host_name)
     print "Host name: %s" % host_name
     print "IP address: %s" % ip_address
-    return "<h1>""Host name: %s" % host_name + "<br>" + "IP address: %s" % ip_address + "</h1>"
+    return "Host name: %s" % host_name + "<br>" + "IP address: %s" % ip_address
 
 
 if __name__ == '__main__':
@@ -29,4 +31,5 @@ if __name__ == '__main__':
     print (app.url_map)
 
     # 启动flask程序
-    app.run(host="0.0.0.0", port=8001)
+    service_port = os.getenv("SERVICE_PORT")
+    app.run(host="0.0.0.0", port=service_port)
