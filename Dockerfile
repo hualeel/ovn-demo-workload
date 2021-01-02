@@ -1,22 +1,11 @@
-FROM registry.cn-qingdao.aliyuncs.com/biz-express/apline-python:v20181229
+FROM hualeel/python3_flask:latest
 MAINTAINER Henry li
 
-ENV APP_DIR=appdir \
-EE_PYPI=https://mirrors.aliyun.com/pypi/simple/ \
-EE_API_SERVICE_PORT=5000
+# 环境变量
+ENV SERVICE_DIR=app
+# K8S_API_AUTH=eyJhbGciOiJSUzI1NiIsImtpZCI6ImpMNFdRVzhCOWRuN3BlWjZkbkFRYVUtZDZjN1dhWWd6cHhibTFQMnNuLVUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi10b2tlbi1qOW5xYyIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJhZG1pbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImZhZmZlMzEzLWY3YzQtNDhmMC05YTZlLWI1OGUzYjEyNGIyZCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTphZG1pbiJ9.c_j1Xhl5QORXya-DnHHZSLzMxyg48B0PIuyFIRDU4L-YsN-Etzey55s6m6DVw9YZKvRlY9NtD0On2pS4uYwFabuPjzydJ0U08MixaVMuchb2e29FhsD0buW3tQp8V3OSL4KVmXAO3yMcJr1utd3LQa2aM4YclmO3Os_DRNyKGTm3D5LjUJeXY4CdaikG8-AhC7JPd-idx_akIjeVDUn7ShhAuTOlJEs6vFiYMdkcW_O3yYNuon1ACPQ01zm70eEWsjNXiJZrotCJ2Us2ItqmV93hcVMjPKGROJwjzul7oFIZIWwaZu3xy83oLwOCjzSYypDJOPGHAyovw_clpbaWiA
 
-# 创建工作目录
-RUN mkdir -p /$SERVICE_NAME
-COPY . /$SERVICE_NAME
-WORKDIR /$SERVICE_NAME
-
-# 添加apk国内源，安装扩展包
-RUN echo "http://mirrors.aliyun.com/alpine/v3.8/main/" > /etc/apk/repositories && \
-    echo "http://mirrors.aliyun.com/alpine/v3.8/community" >> /etc/apk/repositories && \
-    pip install -i $EE_PYPI --upgrade pip && \
-    pip install -i $EE_PYPI -r requirements.txt && \
-    chmod 700 ./run.sh
-
-# 端口
-EXPOSE $EE_API_SERVICE_PORT
-CMD sh ./run.sh
+COPY . /$SERVICE_DIR
+WORKDIR /$SERVICE_DIR
+EXPOSE $SERVICE_PORT
+CMD [ "python", "./main.py" ]
