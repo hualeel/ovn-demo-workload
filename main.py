@@ -8,6 +8,7 @@ Author:
 from flask import Flask, current_app, redirect, url_for
 from flask_cors import *
 import socket
+import os
 
 app = Flask(__name__,
             static_url_path='/python',  # 访问静态资源的url前缀，默认值是static
